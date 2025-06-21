@@ -4,7 +4,7 @@ import search from '../../assets/search.svg'
 import arrow from '../../assets/arrow-down.svg'
 import searchwt from '../../assets/search.svg'
 import './Navbar.css'
-export const Navbar = ({toggleModal,status}) => {
+export const Navbar = ({toggleModal,status,sellModal}) => {
 
 
   return (
@@ -33,7 +33,7 @@ export const Navbar = ({toggleModal,status}) => {
           <img src={arrow} alt='' className='w-5 cursor-pointer' />
         </div>
         <p onClick={toggleModal} className='text-blue font-semibold cursor-pointer'>Login</p>
-        <p>Sell</p>
+        <p onClick={sellModal}>Sell</p>
      </nav>
     </div>
   )
