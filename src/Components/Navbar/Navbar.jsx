@@ -4,10 +4,12 @@ import search from '../../assets/search.svg'
 import arrow from '../../assets/arrow-down.svg'
 import searchwt from '../../assets/search.svg'
 import './Navbar.css'
-export const Navbar = () => {
+export const Navbar = ({toggleModal,status}) => {
+
+
   return (
     <div className='navbar'>
-     <nav className='fixed z-50 w-full overflow-auto p-2 pl-3 pr-3 shadow-md bg-slate-100 border-b-4 border-solid border-b-white '>
+     <nav className='fixed z-14 w-full overflow-auto p-2 pl-3 pr-3 shadow-md bg-slate-100 border-b-4 border-solid border-b-white '>
         <img src={logo} alt='' className='w-12' />
 
         <div className='relative location-search ml-5'>
@@ -23,13 +25,15 @@ export const Navbar = () => {
           />
           <div style={{backgroundColor:'#002f34'}}
           className='flex justify-center items-center absolute top-0 right-0 h-full rounded-e-md w-12'>
-            <img src={searchwt} alt='' />
+            <img src={searchwt} alt=''  className='w-5'/>
           </div>
         </div>
         <div className='mx-1 sm:ml-5 sm:mr-5 relative lang'>
           <p className='font-bold mr-3'>English</p>
           <img src={arrow} alt='' className='w-5 cursor-pointer' />
         </div>
+        <p onClick={toggleModal} className='text-blue font-semibold cursor-pointer'>Login</p>
+        <p>Sell</p>
      </nav>
     </div>
   )
