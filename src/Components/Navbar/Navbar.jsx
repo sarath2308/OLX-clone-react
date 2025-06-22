@@ -4,12 +4,15 @@ import search from '../../assets/search.svg'
 import arrow from '../../assets/arrow-down.svg'
 import searchwt from '../../assets/search.svg'
 import './Navbar.css'
+import {useAuthState} from 'react-firebase-hooks/auth'
+import { auth } from '../firebase/firebase'
+import addbtn from '../../assets/addButton.png'
 export const Navbar = ({toggleModal,status,sellModal}) => {
 
-
+const [user]=useAuthState(auth)
   return (
     <div className='navbar'>
-     <nav className='fixed z-14 w-full overflow-auto p-2 pl-3 pr-3 shadow-md bg-slate-100 border-b-4 border-solid border-b-white '>
+     <nav className='fixed z-17 w-full overflow-auto p-2 pb-0 pl-3 pr-3 shadow-md bg-slate-100 border-b-4 border-solid border-b-white '>
         <img src={logo} alt='' className='w-12' />
 
         <div className='relative location-search ml-5'>
@@ -32,9 +35,34 @@ export const Navbar = ({toggleModal,status,sellModal}) => {
           <p className='font-bold mr-3'>English</p>
           <img src={arrow} alt='' className='w-5 cursor-pointer' />
         </div>
-        <p onClick={toggleModal} className='text-blue font-semibold cursor-pointer'>Login</p>
-        <p onClick={sellModal}>Sell</p>
+      
+     {!user?
+      <p className='font-bold underline ml-5 cursor-pointer' onClick={()=>toggleModal()} style={{color:'#002f34'}}>Login</p>:
+      
+      <div className='relative'>
+      <p style={{color:'#002f34'}}>{user.displayName?.split(' ')[0]}</p>
+      </div>
+     }
+     <img onClick={user?sellModal:toggleModal} src={addbtn} className='w-24 mx-1 sm:ml-5 sm:mr-5 shadow-xl rounded-full cursor-pointer' alt=''></img>
+   
      </nav>
-    </div>
+     <div className='w-full z-10 flex shadow-md  pt-20 pl-10 sm:pl-44 md:pr-44 sub-lists'>
+      <ul className='list-none flex items-center justify-between w-full'>
+      <div className='flex flex-shrink-0'>
+        <p className='font-semibold uppercase all-cats'>All Categories</p>
+      <img className='w-4 ml-2' src={arrow} alt=''></img>
+      
+      </div>
+       <li>Cars</li>
+                    <li>Motorcycles</li>
+                    <li>Mobile Phones</li>
+                    <li>For sale : Houses & Apartments</li>
+                    <li>Scooter</li>
+                    <li>Commercial & Other Vehicles</li>
+                    <li>For rent : Houses & Apartments</li>
+      </ul>
+     </div>
+      </div>
+     
   )
 }

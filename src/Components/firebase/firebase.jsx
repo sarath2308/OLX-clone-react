@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { collection, getDocs, getFirestore } from "firebase/firestore"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmXnL3_t0OSR8JciZK3izq8UHbI0sM6R0",
@@ -16,11 +16,11 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth=getAuth(app)
-export const provider=new GoogleAuthProvider()
+export const provider= new GoogleAuthProvider();
 export const storage=getStorage();
 export const fireStore=getFirestore();
 
-const fetchFromFireStore=async()=>
+export const fetchFromFireStore=async()=>
 {
   try {
     const productsCollection=collection(fireStore,'products')

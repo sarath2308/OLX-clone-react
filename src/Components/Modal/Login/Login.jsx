@@ -10,7 +10,7 @@ import google from '../../../assets/google.png';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../firebase/firebase';
 
-const Login = ({ toggleModal, isOpen, onGoogleClick }) => {
+const Login = ({ toggleModal, isOpen }) => {
 
 const handleClick=async()=>
 {
@@ -74,7 +74,7 @@ console.log(error);
     <Transition appear show={isOpenState} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-10 overflow-y-auto rounded-none"
+        className="fixed inset-0 z-18 overflow-y-auto rounded-none"
         onClose={closeModal}
       >
         <div className="min-h-screen px-4 text-center">

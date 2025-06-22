@@ -12,10 +12,10 @@
   "dependencies": {
     "@headlessui/react": "^2.2.4",
     "firebase": "^11.9.1",
-    "flowbite": "^3.1.2",
-    "flowbite-react": "^0.11.8",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-firebase-hooks": "^5.1.1",
+    "react-router-dom": "^7.6.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

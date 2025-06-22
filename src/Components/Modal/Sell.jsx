@@ -1,24 +1,72 @@
 import React, { useState } from 'react'
-import Input from '../Modal/Sell'
-import { userAuth } from '../Context/Auth'
-import { fireStore } from '../firebase/firebase'
-import { addDoc } from 'firebase/firestore/lite'
-import { collection } from 'firebase/firestore'
-const Sell = ({ toggleModalSell,status}) => {
+import Input from '../Input/Input'
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, useEffect } from 'react';
+import { userAuth } from '../Context/Auth';
+import { fetchFromFireStore, fireStore } from '../firebase/firebase'
+import { addDoc,collection } from 'firebase/firestore'
+import loading from '../../assets/loading.gif'
+import fileUpload from '../../assets/fileUpload.svg'
+import close from '../../assets/close.svg'
+
+
+
+const Sell = ({ toggleModalSell,status,setItems}) => {
   const [title,setTitle]=useState()
   const [category,setCategory]=useState()
   const [price,setPrice]=useState()
   const [description,setDescription]=useState()
-  const [submitting,setSubmiting]=useState()
+  const [submitting,setSubmiting]=useState(false)
+ const [image,setImage]=useState(null)
 
   const auth=userAuth();
+ 
+
+const handleImageUpload=(event)=>
+{
+  if(event.target.files)
+  {
+    setImage(event.target.files[0])
+  }
+}
+
+
   const handleSubmit=async(e)=>
   {
+     console.log("auth data from the sale component--------"+auth.user.uId);
     e.preventDefault();
     if(!auth?.user)
     {
         alert('Please login to continue');
         return;
+    }
+    setSubmiting(true)
+    const readImageAsDataUrl=(file)=>
+    {
+      return new Promise((resolve,reject)=>
+      {
+        const reader=new FileReader();
+        reader.onloadend=()=>
+        {
+          const imageUrl=reader.result
+          localStorage.setItem(`image_${file.name}`,imageUrl)
+        resolve(imageUrl)
+        }
+        reader.onerror=reject;
+        reader.readAsDataURL(file)
+      })
+    }
+    let imageUrl='';
+    if(image)
+    {
+      try {
+        imageUrl=await readImageAsDataUrl(image)
+
+      } catch (error) {
+        console.log(error);
+        alert('failed to read image')
+        return;
+      }
     }
 
     const trimmedTitle=title.trim()
@@ -29,22 +77,27 @@ const Sell = ({ toggleModalSell,status}) => {
     if(!trimmedTitle || !trimmedCategory || !trimmedPrice || !trimmedDescription)
     {
         alert('all fields required')
+        return;
     }
 
     try {
-        await addDoc(collection(fireStore,'Products'),{
+        await addDoc(collection(fireStore,'products'),{
             title,
             category,
             price,
+            imageUrl,
             description,
-            userId:auth.user.uId,
+            userId:auth.user.uid,
             userName:auth.user.displayName || 'Anonymous',
-            createAt:new Data().toDateString()
+            createAt:new Date().toDateString()
 
         })
+        setImage(null)
+        const datas=await fetchFromFireStore();
+        setItems(datas)
         toggleModalSell();
     } catch (error) {
-        console.log("error");
+        console.log("error"+error);
         
     }finally{
         setSubmiting(false)
@@ -56,10 +109,10 @@ const Sell = ({ toggleModalSell,status}) => {
         <Transition appear show={status} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-10 overflow-y-auto bg-black"
-        onClose={toggleModalSell}
+        className="fixed inset-0 z-10 overflow-y-auto"
+        onClose={()=>toggleModalSell()}
       >
-        <div className="min-h-screen px-4 text-center">
+        <div className="min-h-auto px-4 text-center">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -84,8 +137,8 @@ const Sell = ({ toggleModalSell,status}) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="relative w-full max-w-md p-4 md:h-auto inline-block align-middle transform bg-white shadow-xl rounded-lg dark:bg-gray-700">
-              {/* Close Button */}
+            <div className="relative w-full max-w-md p-4 md:h-auto inline-block align-middle transform bg-white shadow-xl rounded-lg">
+
               <img
                 onClick={() => {
                   toggleModalSell();
@@ -98,7 +151,7 @@ const Sell = ({ toggleModalSell,status}) => {
 
               {/* Modal Body */}
               <div
-                className="bg-white h-96 p-0 rounded-md"
+                className="bg-white h-auto p-0 rounded-md"
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className="p-6 pl-8 pr-8 pb-8">
@@ -118,7 +171,7 @@ const Sell = ({ toggleModalSell,status}) => {
                       ) : (
                         <div className="relative h-40 sm:h-60 w-full border-2 border-black border-solid rounded-md">
                           <input
-                            onChange={handleImageUpload}
+                          onChange={handleImageUpload}
                             type="file"
                             className="absolute inset-10 h-full w-full opacity-0 cursor-pointer z-30"
                             required
