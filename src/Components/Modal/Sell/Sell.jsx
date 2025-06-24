@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import Input from '../Input/Input'
+import Input from '../../Input/Input'
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useEffect } from 'react';
-import { userAuth } from '../Context/Auth';
-import { fetchFromFireStore, fireStore } from '../firebase/firebase'
+import { userAuth } from '../../Context/Auth';
+import { fetchFromFireStore, fireStore } from '../../firebase/firebase'
 import { addDoc,collection } from 'firebase/firestore'
-import loading from '../../assets/loading.gif'
-import fileUpload from '../../assets/fileUpload.svg'
-import close from '../../assets/close.svg'
+import loading from '../../../assets/loading.gif'
+import fileUpload from '../../../assets/fileUpload.svg'
+import close from '../../../assets/close.svg'
 
 
 
@@ -33,7 +33,6 @@ const handleImageUpload=(event)=>
 
   const handleSubmit=async(e)=>
   {
-     console.log("auth data from the sale component--------"+auth.user.uId);
     e.preventDefault();
     if(!auth?.user)
     {
@@ -158,10 +157,10 @@ const handleImageUpload=(event)=>
                   <p className="font-bold text-lg mb-3">Sell Item</p>
 
                   <form onSubmit={handleSubmit}>
-                    <Input setInput={setTitle} placeholder="Title" />
-                    <Input setInput={setCategory} placeholder="category" />
-                    <Input setInput={setPrice} placeholder="Price" />
-                    <Input setInput={setDescription} placeholder="Description" />
+                    <Input setInput={setTitle} placeholder="Title"  />
+                    <Input setInput={setCategory} placeholder="category"  />
+                    <Input setInput={setPrice} placeholder="Price"  />
+                    <Input setInput={setDescription} placeholder="Description"  />
 
                     <div className="pt-2 w-full relative">
                       {image ? (

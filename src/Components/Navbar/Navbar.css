@@ -28,6 +28,7 @@ li{
 .sub-lists::-webkit-scrollbar{
     display: none;
 }
+
 @media (max-width:767px)
 {
     .location-search

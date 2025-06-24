@@ -2,7 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { collection, getDocs, getFirestore } from "firebase/firestore"; 
+import { collection, getDocs, getFirestore,doc,updateDoc,deleteDoc } from "firebase/firestore"; 
+import { signOut } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDmXnL3_t0OSR8JciZK3izq8UHbI0sM6R0",
@@ -37,3 +38,36 @@ export const fetchFromFireStore=async()=>
     return []
   }
 }
+
+export const updateProductById = async (id, updatedData) => {
+  try {
+    const productRef = doc(fireStore, 'products', id);
+    await updateDoc(productRef, updatedData);
+    console.log(`Product with ID ${id} updated successfully.`);
+    return true;
+  } catch (error) {
+    console.error('Error updating product:', error);
+    return false;
+  }
+};
+
+export const deleteProductById = async (productId) => {
+  try {
+    const productRef = doc(fireStore, 'products', productId); // 'products' is your collection name
+    await deleteDoc(productRef);
+    console.log('Document deleted successfully!');
+  } catch (error) {
+    console.error('Error deleting document:', error);
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    await signOut(auth);
+    console.log('User signed out successfully.');
+    return { success: true };
+  } catch (error) {
+    console.error('Error during sign out:', error.message);
+    return { success: false, error: error.message };
+  }
+};

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ItemsContext } from '../../Context/Item'
 import Login from '../../Modal/Login/Login'
-import Sell from '../../Modal/Sell'
+import Sell from '../../Modal/Sell/Sell'
 import { Navbar } from '../../Navbar/Navbar'
 
 const Details = () => {
@@ -25,7 +25,7 @@ const Details = () => {
             <div className='border-2 w-full rounded-lg flex justify-center overflow-hidden h-96'>
                 <img src={item?.imageUrl} className='object-cover' alt={item?.title}/>
             </div>
-            <div className='flex flex-col relative w-full'>
+            <div className='flex flex-col relative  w-full'>
                 <p className='p-1 pl-0 text-2xl font-bold'>{item?.price}</p>
                   <p className='p-1 pl-0 text-base'>{item?.category}</p>
                    <p className='p-1 pl-0 text-xl font-bold'>{item?.title}</p>

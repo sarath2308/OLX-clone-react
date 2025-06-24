@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../../assets/symbol.png'
 import search from '../../assets/search.svg'
 import arrow from '../../assets/arrow-down.svg'
@@ -7,9 +7,14 @@ import './Navbar.css'
 import {useAuthState} from 'react-firebase-hooks/auth'
 import { auth } from '../firebase/firebase'
 import addbtn from '../../assets/addButton.png'
+import { useNavigate } from 'react-router-dom'
+import { logoutUser } from '../firebase/firebase'
 export const Navbar = ({toggleModal,status,sellModal}) => {
 
 const [user]=useAuthState(auth)
+
+const [dropDown,setDropdown]=useState(false)
+const navigate=useNavigate()
   return (
     <div className='navbar'>
      <nav className='fixed z-17 w-full overflow-auto p-2 pb-0 pl-3 pr-3 shadow-md bg-slate-100 border-b-4 border-solid border-b-white '>
@@ -31,11 +36,19 @@ const [user]=useAuthState(auth)
             <img src={searchwt} alt=''  className='w-5'/>
           </div>
         </div>
-        <div className='mx-1 sm:ml-5 sm:mr-5 relative lang'>
-          <p className='font-bold mr-3'>English</p>
-          <img src={arrow} alt='' className='w-5 cursor-pointer' />
-        </div>
-      
+        <div className="mx-1 sm:ml-5 sm:mr-5 relative lang z-50">
+  <div className="flex items-center cursor-pointer" onClick={() => setDropdown(!dropDown)}>
+    <p className="font-bold mr-1">English</p>
+    <img
+      src={arrow}
+      alt=""
+      className={`w-5 transform transition-transform duration-200 ${dropDown ? 'rotate-180' : ''}`}
+    />
+  </div>
+
+</div>
+
+
      {!user?
       <p className='font-bold underline ml-5 cursor-pointer' onClick={()=>toggleModal()} style={{color:'#002f34'}}>Login</p>:
       
@@ -46,7 +59,19 @@ const [user]=useAuthState(auth)
      <img onClick={user?sellModal:toggleModal} src={addbtn} className='w-24 mx-1 sm:ml-5 sm:mr-5 shadow-xl rounded-full cursor-pointer' alt=''></img>
    
      </nav>
-     <div className='w-full z-10 flex shadow-md  pt-20 pl-10 sm:pl-44 md:pr-44 sub-lists'>
+    <div
+  className={`absolute right-20 top-10 mt-2 w-32 bg-white border border-gray-300 rounded-md shadow-lg transition-all duration-200 ${
+    dropDown ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+  }`}
+>
+  <p onClick={()=>!user?toggleModal:navigate('/myads')} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">My Ads</p>
+  <p onClick={()=>{
+    logoutUser();
+    setDropdown(false)
+
+  }} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Logout</p>
+</div>
+     <div className='w-full  flex shadow-md  pt-20 pl-10 sm:pl-44 md:pr-44 sub-lists'>
       <ul className='list-none flex items-center justify-between w-full'>
       <div className='flex flex-shrink-0'>
         <p className='font-semibold uppercase all-cats'>All Categories</p>
