@@ -8,7 +8,7 @@ import { addDoc,collection } from 'firebase/firestore'
 import loading from '../../../assets/loading.gif'
 import fileUpload from '../../../assets/fileUpload.svg'
 import close from '../../../assets/close.svg'
-
+import { toast } from 'react-toastify';
 
 
 const Sell = ({ toggleModalSell,status,setItems}) => {
@@ -36,7 +36,7 @@ const handleImageUpload=(event)=>
     e.preventDefault();
     if(!auth?.user)
     {
-        alert('Please login to continue');
+        toast.warning('Please login to continue');
         return;
     }
     setSubmiting(true)
